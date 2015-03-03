@@ -1,7 +1,14 @@
 rock_library(orocos_cpp_base
-    SOURCES Dummy.cpp
-    HEADERS Dummy.hpp)
+        ProxyPort.cpp
+        OrocosHelpers.cpp
+    HEADERS 
+        ProxyPort.hpp
+        OrocosHelpers.hpp
+    DEPS_PKGCONFIG
+        orocos-rtt-${OROCOS_TARGET}
+    DEPS_PLAIN 
+        Boost_SYSTEM Boost_FILESYSTEM Boost_THREAD
+)
 
-rock_executable(orocos_cpp_base_bin Main.cpp
-    DEPS orocos_cpp_base)
+
 
