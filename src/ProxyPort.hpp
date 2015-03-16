@@ -61,6 +61,16 @@ public:
             writer = NULL;
         }
     }
+
+    bool disconnect()
+    {
+        return port->disconnect();
+    }
+
+    bool disconnect(OutputProxyPort<T> &outPut)
+    {
+        return port->disconnect(&outPut);
+    }
     
     ~InputProxyPort()
     {
@@ -121,6 +131,16 @@ public:
         return port->connectTo(inputPort.port);
     };
     
+    bool disconnect()
+    {
+        return port->disconnect();
+    }
+
+    bool disconnect(InputProxyPort<T> &inputPort)
+    {
+        return port->disconnect(&inputPort);
+    }
+
     ~OutputProxyPort()
     {
         deleteReader();
