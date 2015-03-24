@@ -134,6 +134,10 @@ bool solveString(std::string &input, const std::string &replace, const std::stri
 
 bool OrocosHelpers::loadTypekitAndTransports(const std::string& componentName)
 {
+    //already loaded, we can just exit
+    if(RTT::types::TypekitRepository::hasTypekit(componentName))
+        return true;
+    
     std::vector<std::string> knownTransports;
     knownTransports.push_back("corba");
     knownTransports.push_back("mqueue");
@@ -190,4 +194,26 @@ bool OrocosHelpers::loadTypekitAndTransports(const std::string& componentName)
     }
     
     return true;
+}
+
+std::vector< std::string > OrocosHelpers::getNeededTypekits(const std::string& componentName)
+{
+    //first we load the typekit
+    std::vector<std::string> pkgConfigFields;
+    pkgConfigFields.push_back("typekits");
+    std::vector<std::string> pkgConfigValues;
+
+    if(!parsePkgConfig(componentName + std::string("-tasks-") + xstr(OROCOS_TARGET) + std::string(".pc"), pkgConfigFields, pkgConfigValues))
+        throw std::runtime_error("Could not load pkgConfig file for typekit for component " + componentName);
+
+    boost::char_separator<char> sep(" ");
+    boost::tokenizer<boost::char_separator<char> > typekits(pkgConfigValues[0], sep);
+
+    std::vector< std::string > ret;
+    for(const std::string &tk: typekits)
+    {
+        ret.push_back(tk);
+    }
+    
+    return ret;
 }
