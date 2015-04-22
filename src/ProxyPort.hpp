@@ -43,7 +43,7 @@ public:
         if(!writer)
         {
             writer = dynamic_cast<RTT::OutputPort<T> * >(port->antiClone());
-            RTT::TaskContext *clientTask = getClientTask();
+            RTT::TaskContext *clientTask = OrocosHelpers::getClientTask();
             writer->setName(getFreePortName(clientTask, port));
             clientTask->addPort(*writer);
             if(!port->connectTo(writer, policy))
@@ -102,7 +102,7 @@ public:
         if(!reader)
         {
             reader = dynamic_cast<RTT::InputPort<T> *>(port->antiClone());
-            RTT::TaskContext *clientTask = getClientTask();
+            RTT::TaskContext *clientTask = OrocosHelpers::getClientTask();
             reader->setName(getFreePortName(clientTask, port));
             clientTask->addPort(*reader);
             if(!reader->connectTo(port, policy))
