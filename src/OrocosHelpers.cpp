@@ -3,12 +3,19 @@
 #include <rtt/TaskContext.hpp>
 #include <rtt/transports/corba/TaskContextServer.hpp>
 #include <rtt/transports/corba/CorbaDispatcher.hpp>
+#include <rtt/plugin/PluginLoader.hpp>
 static RTT::TaskContext *clientTask = NULL;
 
 RTT::TaskContext* OrocosHelpers::getClientTask()
 {
     if(!clientTask)
     {
+        const char *ldLibPath = getenv("LD_LIBRARY_PATH");
+        if(ldLibPath)
+        {
+            RTT::plugin::PluginLoader::Instance()->setPluginPath(ldLibPath);
+        }   
+
         clientTask = new RTT::TaskContext("OrocosCPP");
         
         RTT::corba::TaskContextServer::Create( clientTask );
