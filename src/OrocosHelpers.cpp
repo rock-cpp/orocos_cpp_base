@@ -10,7 +10,7 @@ RTT::TaskContext* OrocosHelpers::getClientTask()
 {
     if(!clientTask)
     {
-        const char *ldLibPath = getenv("LD_LIBRARY_PATH");
+        const char *ldLibPath = getenv("RTT_COMPONENT_PATH");
         if(ldLibPath)
         {
             RTT::plugin::PluginLoader::Instance()->setPluginPath(ldLibPath);
