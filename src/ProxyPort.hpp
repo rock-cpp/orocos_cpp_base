@@ -32,6 +32,10 @@ public:
             throw std::runtime_error("Flow interface of wrong type given");
     };
 
+    RTT::base::InputPortInterface *getPortInterface()
+    {
+        return port;
+    }
     
     RTT::OutputPort<T> &getWriter()
     {
@@ -93,8 +97,12 @@ public:
         if(!port)
             throw std::runtime_error("Flow interface of wrong type given");
     };
-    
-    RTT::InputPort<T> &getReader()
+
+    RTT::base::OutputPortInterface *getPortInterface()
+    {
+        return port;
+    }
+        RTT::InputPort<T> &getReader()
     {
         return getReader(RTT::ConnPolicy());
     }
