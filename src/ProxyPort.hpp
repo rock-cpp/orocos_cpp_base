@@ -43,6 +43,9 @@ public:
         if(!writer)
         {
             writer = dynamic_cast<RTT::OutputPort<T> * >(port->antiClone());
+            if(!writer)
+                throw std::runtime_error("Error, could not get writer for port " + port->getName()); 
+
             RTT::TaskContext *clientTask = OrocosHelpers::getClientTask();
             writer->setName(getFreePortName(clientTask, port));
             clientTask->addPort(*writer);
@@ -75,7 +78,6 @@ public:
     ~InputProxyPort()
     {
         removeWriter();
-        port->disconnect();
     }
 };
 
@@ -102,6 +104,8 @@ public:
         if(!reader)
         {
             reader = dynamic_cast<RTT::InputPort<T> *>(port->antiClone());
+            if(!reader)
+                throw std::runtime_error("Error, could not get reader for port " + port->getName()); 
             RTT::TaskContext *clientTask = OrocosHelpers::getClientTask();
             reader->setName(getFreePortName(clientTask, port));
             clientTask->addPort(*reader);
@@ -144,7 +148,6 @@ public:
     ~OutputProxyPort()
     {
         deleteReader();
-        port->disconnect();
     }
 };
 
