@@ -71,12 +71,14 @@ public:
 
     bool disconnect()
     {
-        return port->disconnect();
+        port->disconnect();
+        return true;
     }
 
     bool disconnect(OutputProxyPort<T> &outPut)
     {
-        return port->disconnect(&outPut);
+        port->disconnect(&outPut);
+        return  true;
     }
     
     ~InputProxyPort()
@@ -145,12 +147,14 @@ public:
     
     bool disconnect()
     {
-        return port->disconnect();
+        port->disconnect();
+        return true;
     }
 
     bool disconnect(InputProxyPort<T> &inputPort)
     {
-        return port->disconnect(&inputPort);
+        port->disconnect(&inputPort);
+        return true;
     }
 
     ~OutputProxyPort()
