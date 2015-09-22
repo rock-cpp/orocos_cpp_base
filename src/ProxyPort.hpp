@@ -64,7 +64,9 @@ public:
         if(writer)
         {
             writer->disconnect();
-            delete writer;
+            RTT::TaskContext *clientTask = OrocosHelpers::getClientTask();
+            //this call should also delete the writer
+            clientTask->ports()->removePort(writer);
             writer = NULL;
         }
     }
@@ -130,7 +132,9 @@ public:
         if(reader)
         {
             reader->disconnect();
-            delete reader;
+            RTT::TaskContext *clientTask = OrocosHelpers::getClientTask();
+            //this call should also delete the reader
+            clientTask->ports()->removePort(reader);
             reader = NULL;
         }
     }
