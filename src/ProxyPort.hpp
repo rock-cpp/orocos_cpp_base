@@ -66,7 +66,7 @@ public:
             writer->disconnect();
             RTT::TaskContext *clientTask = OrocosHelpers::getClientTask();
             //this call should also delete the writer
-            clientTask->ports()->removePort(writer);
+            clientTask->ports()->removePort(writer->getName());
             writer = NULL;
         }
     }
@@ -134,7 +134,7 @@ public:
             reader->disconnect();
             RTT::TaskContext *clientTask = OrocosHelpers::getClientTask();
             //this call should also delete the reader
-            clientTask->ports()->removePort(reader);
+            clientTask->ports()->removePort(reader->getName());
             reader = NULL;
         }
     }
