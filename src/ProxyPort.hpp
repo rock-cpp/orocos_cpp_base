@@ -6,6 +6,7 @@
 #include <rtt/OutputPort.hpp>
 #include "OrocosHelpers.hpp"
 #include <rtt/TaskContext.hpp>
+#include <rtt/extras/ReadOnlyPointer.hpp>
 
 template<typename T>
 class OutputProxyPort;
@@ -89,6 +90,7 @@ public:
     }
 };
 
+
 template<typename T>
 class OutputProxyPort : public ProxyPortBase
 {
@@ -142,12 +144,30 @@ public:
     bool connectTo(InputProxyPort<T> &inputPort, RTT::ConnPolicy const& policy)
     {
         return port->connectTo(inputPort.port, policy);
-    };
+    }
+    
+    bool connectTo(InputProxyPort<RTT::extras::ReadOnlyPointer<T> > &inputPort, RTT::ConnPolicy const& policy)
+    {
+        return port->connectTo(inputPort.port, policy);
+    }
     
     bool connectTo(InputProxyPort<T> &inputPort)
     {
         return port->connectTo(inputPort.port);
-    };
+    }
+
+
+    template<typename T2>
+    bool connectTo(InputProxyPort<T2> &inputPort)
+    {
+        OutputProxyPort<RTT::extras::ReadOnlyPointer<T2> > &base(*this);
+        return port->connectTo(inputPort.port);
+    }
+    
+    bool connectTo(InputProxyPort<RTT::extras::ReadOnlyPointer<T> > &inputPort)
+    {
+        return port->connectTo(inputPort.port);
+    }
     
     bool disconnect()
     {
