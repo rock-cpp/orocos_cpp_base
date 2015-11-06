@@ -5,6 +5,9 @@
 #include <rtt/transports/corba/CorbaDispatcher.hpp>
 #include <rtt/plugin/PluginLoader.hpp>
 static RTT::TaskContext *clientTask = NULL;
+#include <sys/types.h>
+#include <unistd.h>
+#include <boost/lexical_cast.hpp>
 
 RTT::TaskContext* OrocosHelpers::getClientTask()
 {
@@ -16,7 +19,8 @@ RTT::TaskContext* OrocosHelpers::getClientTask()
             RTT::plugin::PluginLoader::Instance()->setPluginPath(ldLibPath);
         }   
 
-        clientTask = new RTT::TaskContext("OrocosCPP");
+        pid_t pid = getpid();
+        clientTask = new RTT::TaskContext("OrocosCPP_" + boost::lexical_cast<std::string>(pid) );
         
         RTT::corba::TaskContextServer::Create( clientTask );
     
