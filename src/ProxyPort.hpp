@@ -24,6 +24,7 @@ template<typename T>
 class InputProxyPort : public ProxyPortBase
 {
     friend class OutputProxyPort<T>;
+    friend class OutputProxyPort< RTT::extras::ReadOnlyPointer<T> >;
     RTT::base::InputPortInterface *port;
     RTT::OutputPort<T> *writer;
 public:
@@ -95,6 +96,7 @@ template<typename T>
 class OutputProxyPort : public ProxyPortBase
 {
     friend class InputProxyPort<T>;
+    friend class InputProxyPort< RTT::extras::ReadOnlyPointer<T> >;
     RTT::base::OutputPortInterface *port;
     RTT::InputPort<T> *reader;
 public:
