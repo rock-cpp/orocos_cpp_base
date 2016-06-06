@@ -9,24 +9,35 @@ static RTT::TaskContext *clientTask = NULL;
 #include <unistd.h>
 #include <boost/lexical_cast.hpp>
 
+void OrocosHelpers::initClientTask(const std::string& name)
+{
+    if(clientTask)
+    {
+        throw std::runtime_error("OrocosHelpers::initClientTask : Error, initClientTask was called, and the client was already initialized");
+    }
+    
+    const char *ldLibPath = getenv("RTT_COMPONENT_PATH");
+    if(ldLibPath)
+    {
+        RTT::plugin::PluginLoader::Instance()->setPluginPath(ldLibPath);
+    }   
+
+    clientTask = new RTT::TaskContext(name);
+    
+    RTT::corba::TaskContextServer::Create( clientTask );
+
+    RTT::corba::CorbaDispatcher::Instance( clientTask->ports(), ORO_SCHED_OTHER, RTT::os::LowestPriority );
+
+}
+
+
 RTT::TaskContext* OrocosHelpers::getClientTask()
 {
     if(!clientTask)
     {
-        const char *ldLibPath = getenv("RTT_COMPONENT_PATH");
-        if(ldLibPath)
-        {
-            RTT::plugin::PluginLoader::Instance()->setPluginPath(ldLibPath);
-        }   
-
         pid_t pid = getpid();
-        clientTask = new RTT::TaskContext("OrocosCPP_" + boost::lexical_cast<std::string>(pid) );
-        
-        RTT::corba::TaskContextServer::Create( clientTask );
-    
-        RTT::corba::CorbaDispatcher::Instance( clientTask->ports(), ORO_SCHED_OTHER, RTT::os::LowestPriority );
+        initClientTask("OrocosCPP_" + boost::lexical_cast<std::string>(pid));
     }
     return clientTask;
 }
-
 
