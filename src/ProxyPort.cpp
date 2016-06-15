@@ -17,3 +17,8 @@ std::string ProxyPortBase::getFreePortName(RTT::TaskContext* clientTask, RTT::ba
         }
     }
 }
+
+
+//instanciate once, to catch simple errors
+template class OutputProxyPort<int>;
+template class InputProxyPort<int>;

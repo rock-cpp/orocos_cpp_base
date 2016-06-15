@@ -81,7 +81,7 @@ public:
 
     bool disconnect(OutputProxyPort<T> &outPut)
     {
-        port->disconnect(&outPut);
+        port->disconnect(outPut.getPortInterface());
         return  true;
     }
     
@@ -110,7 +110,8 @@ public:
     {
         return port;
     }
-        RTT::InputPort<T> &getReader()
+    
+    RTT::InputPort<T> &getReader()
     {
         return getReader(RTT::ConnPolicy());
     }
@@ -145,17 +146,17 @@ public:
     
     bool connectTo(InputProxyPort<T> &inputPort, RTT::ConnPolicy const& policy)
     {
-        return port->connectTo(inputPort.port, policy);
+        return port->connectTo(inputPort.getPortInterface(), policy);
     }
     
     bool connectTo(InputProxyPort<RTT::extras::ReadOnlyPointer<T> > &inputPort, RTT::ConnPolicy const& policy)
     {
-        return port->connectTo(inputPort.port, policy);
+        return port->connectTo(inputPort.getPortInterface(), policy);
     }
     
     bool connectTo(InputProxyPort<T> &inputPort)
     {
-        return port->connectTo(inputPort.port);
+        return port->connectTo(inputPort.getPortInterface());
     }
 
 
@@ -163,12 +164,12 @@ public:
     bool connectTo(InputProxyPort<T2> &inputPort)
     {
         OutputProxyPort<RTT::extras::ReadOnlyPointer<T2> > &base(*this);
-        return port->connectTo(inputPort.port);
+        return port->connectTo(inputPort.getPortInterface());
     }
     
     bool connectTo(InputProxyPort<RTT::extras::ReadOnlyPointer<T> > &inputPort)
     {
-        return port->connectTo(inputPort.port);
+        return port->connectTo(inputPort.getPortInterface());
     }
     
     bool disconnect()
@@ -179,7 +180,7 @@ public:
 
     bool disconnect(InputProxyPort<T> &inputPort)
     {
-        port->disconnect(&inputPort);
+        port->disconnect(inputPort.getPortInterface());
         return true;
     }
 
