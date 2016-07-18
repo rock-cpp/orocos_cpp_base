@@ -34,6 +34,17 @@ public:
             throw std::runtime_error("Flow interface of wrong type given");
     };
 
+    InputProxyPort(RTT::TaskContext *task, const std::string &portName): port(NULL), writer(NULL)
+    {
+        RTT::base::PortInterface *iface = task->getPort(portName);
+        if(!iface)
+            throw std::runtime_error("InputProxyPort: Error, task " + task->getName() + " has no port with the name " + portName);
+
+        port = dynamic_cast<RTT::base::InputPortInterface *>(iface);
+        if(!port)
+            throw std::runtime_error("InputProxyPort: Error, port '" + portName + "' of task '" + task->getName() + "' hast an unexpected type");
+    };
+    
     RTT::base::InputPortInterface *getPortInterface()
     {
         return port;
@@ -106,6 +117,17 @@ public:
             throw std::runtime_error("Flow interface of wrong type given");
     };
 
+    OutputProxyPort(RTT::TaskContext *task, const std::string &portName): port(NULL), reader(NULL)
+    {
+        RTT::base::PortInterface *iface = task->getPort(portName);
+        if(!iface)
+            throw std::runtime_error("OutputProxyPort: Error, task " + task->getName() + " has no port with the name " + portName);
+
+        port = dynamic_cast<RTT::base::OutputPortInterface *>(iface);
+        if(!port)
+            throw std::runtime_error("OutputProxyPort: Error, port '" + portName + "' of task '" + task->getName() + "' hast an unexpected type");
+    };
+    
     RTT::base::OutputPortInterface *getPortInterface()
     {
         return port;
