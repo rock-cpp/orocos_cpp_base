@@ -1,5 +1,4 @@
-#ifndef PROXYPORT_H
-#define PROXYPORT_H
+#pragma once
 
 #include <rtt/FlowStatus.hpp>
 #include <rtt/InputPort.hpp>
@@ -7,6 +6,17 @@
 #include "OrocosHelpers.hpp"
 #include <rtt/TaskContext.hpp>
 #include <rtt/extras/ReadOnlyPointer.hpp>
+
+#define FW_DECLARE_TYPE(type) \
+    extern template class RTT::InputPort<type>; \
+    extern template class RTT::OutputPort<type>; \
+    extern template class OutputProxyPort<type>; \
+    extern template class InputProxyPort<type>; \
+    extern template class RTT::base::ChannelElement<type>;
+    
+#define INSTANCIATE_TYPE(type) \
+    template class OutputProxyPort<type>; \
+    template class InputProxyPort<type>;
 
 template<typename T>
 class OutputProxyPort;
@@ -211,6 +221,3 @@ public:
         deleteReader();
     }
 };
-
-
-#endif // PROXYPORT_H

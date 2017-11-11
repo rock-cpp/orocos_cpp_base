@@ -1,5 +1,5 @@
-#ifndef OROCOSHELPERS_H
-#define OROCOSHELPERS_H
+#pragma once
+
 #include <string>
 #include <vector>
 
@@ -28,4 +28,3 @@ public:
     static RTT::TaskContext *getClientTask();    
 };
 
-#endif // OROCOSHELPERS_H
