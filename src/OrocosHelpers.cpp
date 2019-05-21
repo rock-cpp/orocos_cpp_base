@@ -26,8 +26,12 @@ void OrocosHelpers::initClientTask(const std::string& name)
     
     RTT::corba::TaskContextServer::Create( clientTask );
 
+#if RTT_VERSION_GTE(2,8,99)
+    clientTask->addConstant<int>("CorbaDispatcherScheduler", ORO_SCHED_OTHER);
+    clientTask->addConstant<int>("CorbaDispatcherPriority", RTT::os::LowestPriority);
+#else
     RTT::corba::CorbaDispatcher::Instance( clientTask->ports(), ORO_SCHED_OTHER, RTT::os::LowestPriority );
-
+#endif
 }
 
 
